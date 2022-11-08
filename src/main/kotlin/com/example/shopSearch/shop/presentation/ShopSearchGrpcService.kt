@@ -23,7 +23,7 @@ class ShopSearchGrpcService(
         val searchResults = shopService.searchByCategoryWithIn(searchRequest).toList()
 
         SearchResponse.newBuilder()
-            .addAllIdList(searchResults)
+            .addAllIds(searchResults)
             .build()
     }
 
@@ -33,7 +33,7 @@ class ShopSearchGrpcService(
         val searchResults = shopService.searchByDetailCategoryWithIn(searchRequest).toList()
 
         SearchResponse.newBuilder()
-            .addAllIdList(searchResults)
+            .addAllIds(searchResults)
             .build()
     }
 
@@ -43,7 +43,7 @@ class ShopSearchGrpcService(
         val searchResults = shopService.searchByShopNameWithIn(searchRequest).toList()
 
         SearchResponse.newBuilder()
-            .addAllIdList(searchResults)
+            .addAllIds(searchResults)
             .build()
     }
 
@@ -53,7 +53,7 @@ class ShopSearchGrpcService(
         val searchResults = shopService.searchWithIn(searchRequest).toList()
 
         SearchResponse.newBuilder()
-            .addAllIdList(searchResults)
+            .addAllIds(searchResults)
             .build()
     }
 }
