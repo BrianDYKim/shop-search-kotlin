@@ -7,9 +7,9 @@ import com.example.shopSearch.shop.domain.vo.DetailCategory
  * @author Brian
  * @since 2022/11/09
  */
-sealed class ShopRequest {
+sealed class ShopCommand {
 
-    data class CategoryWithIn(
+    data class CategoryWithInRequest(
         var category: Category,
         var latitude: Double,
         var longitude: Double,
@@ -21,7 +21,7 @@ sealed class ShopRequest {
 
     }
 
-    data class DetailCategoryWithIn(
+    data class DetailCategoryWithInRequest(
         var detailCategory: DetailCategory,
         var latitude: Double,
         var longitude: Double,
@@ -33,7 +33,7 @@ sealed class ShopRequest {
 
     }
 
-    data class ShopNameWithIn(
+    data class ShopNameWithInRequest(
         var shopName: String,
         var latitude: Double,
         var longitude: Double,
@@ -45,7 +45,7 @@ sealed class ShopRequest {
 
     }
 
-    data class WithIn(
+    data class WithInRequest(
         var latitude: Double,
         var longitude: Double,
         var distance: Double,

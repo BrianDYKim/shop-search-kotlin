@@ -1,6 +1,7 @@
 package com.example.shopSearch.config
 
 import org.elasticsearch.client.RestHighLevelClient
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.elasticsearch.client.ClientConfiguration
@@ -21,14 +22,16 @@ import org.springframework.data.elasticsearch.core.mapping.SimpleElasticsearchMa
  * @since 2022/11/08
  */
 @Configuration
-class ElasticsearchConfig : AbstractReactiveElasticsearchConfiguration() {
+class ElasticsearchConfig(
+    @Value("\${elasticsearch.host-and-port}") private val hostAndPort: String
+) : AbstractReactiveElasticsearchConfiguration() {
 
     // Configure the client to use.
     // This can be done by ReactiveRestClients or directly via DefaultReactiveElasticsearchClient
     @Bean
     override fun reactiveElasticsearchClient(): ReactiveElasticsearchClient {
         val clientConfiguration = ClientConfiguration.builder()
-            .connectedTo("localhost:9200")
+            .connectedTo(hostAndPort)
             .build()
 
         return ReactiveRestClients.create(clientConfiguration)

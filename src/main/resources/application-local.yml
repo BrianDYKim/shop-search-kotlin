@@ -1,0 +1,7 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+
+elasticsearch:
+  host-and-port: localhost:9200

@@ -1,6 +1,6 @@
 package com.example.shopSearch.shop.application
 
-import com.example.shopSearch.shop.domain.dto.ShopRequest
+import com.example.shopSearch.shop.domain.dto.ShopCommand
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -13,23 +13,23 @@ interface ShopService {
      * @param request request
      * @return list of shopId
      */
-    suspend fun searchWithIn(request: ShopRequest.WithIn): Flow<String>
+    suspend fun searchWithIn(request: ShopCommand.WithInRequest): Flow<String>
 
     /**
      * @param request request
      * @return list of shopId
      */
-    suspend fun searchByCategoryWithIn(request: ShopRequest.CategoryWithIn): Flow<String>
+    suspend fun searchByCategoryWithIn(request: ShopCommand.CategoryWithInRequest): Flow<String>
 
     /**
      * @param request request
      * @return list of shopId
      */
-    suspend fun searchByDetailCategoryWithIn(request: ShopRequest.DetailCategoryWithIn): Flow<String>
+    suspend fun searchByDetailCategoryWithIn(request: ShopCommand.DetailCategoryWithInRequest): Flow<String>
 
     /**
      * @param request request
      * @return list of shopId
      */
-    suspend fun searchByShopNameWithIn(request: ShopRequest.ShopNameWithIn): Flow<String>
+    suspend fun searchByShopNameWithIn(request: ShopCommand.ShopNameWithInRequest): Flow<String>
 }

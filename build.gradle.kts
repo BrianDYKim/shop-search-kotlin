@@ -34,7 +34,11 @@ dependencies {
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:$coroutineVersion")
 
+    // Elasticsearch
     implementation("org.springframework.boot:spring-boot-starter-data-elasticsearch")
+
+    // Test Implementation
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
 
     // mockk
     testImplementation("io.mockk:mockk:$mockkVersion")
@@ -45,6 +49,23 @@ dependencies {
 
     // Annotation Processing Tool
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+
+    // 외부 라이브러리 import
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
+
+    // 해당 dependency가 있어야 coroutine을 이용해서 grpc를 이용 가능하다
+    api("io.grpc:grpc-kotlin-stub:1.3.0")
+
+    // Armeria
+    implementation("com.linecorp.armeria:armeria-grpc")
+    implementation("com.linecorp.armeria:armeria-spring-boot2-webflux-starter")
+}
+
+dependencyManagement {
+    imports {
+        mavenBom("com.linecorp.armeria:armeria-bom:0.99.9")
+        mavenBom("io.netty:netty-bom:4.1.51.Final")
+    }
 }
 
 tasks.withType<KotlinCompile> {

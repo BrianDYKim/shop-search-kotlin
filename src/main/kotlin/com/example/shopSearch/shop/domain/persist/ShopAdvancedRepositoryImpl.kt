@@ -13,6 +13,7 @@ import org.springframework.data.elasticsearch.core.query.CriteriaQuery
 import org.springframework.data.elasticsearch.core.query.GeoDistanceOrder
 import org.springframework.stereotype.Repository
 import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 
 /**
  * @author Brian
@@ -110,5 +111,9 @@ class ShopAdvancedRepositoryImpl(
 
         return reactiveElasticsearchOperations.search(query, Shop::class.java)
             .map { it.content }
+    }
+
+    override fun save(shop: Shop): Mono<Shop> {
+        return reactiveElasticsearchOperations.save(shop)
     }
 }

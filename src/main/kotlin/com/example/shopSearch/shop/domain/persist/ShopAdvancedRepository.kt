@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import org.springframework.data.domain.Pageable
 import org.springframework.data.elasticsearch.core.geo.GeoPoint
 import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 
 /**
  * @author Brian
@@ -68,4 +69,6 @@ interface ShopAdvancedRepository {
         unit: String,
         pageable: Pageable
     ): Flux<Shop>
+
+    fun save(shop: Shop): Mono<Shop>
 }

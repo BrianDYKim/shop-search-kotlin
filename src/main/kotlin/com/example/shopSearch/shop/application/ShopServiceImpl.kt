@@ -1,7 +1,7 @@
 package com.example.shopSearch.shop.application
 
-import com.example.shopSearch.shop.domain.dto.ShopRequest
-import com.example.shopSearch.shop.domain.persist.ShopRepository
+import com.example.shopSearch.shop.domain.dto.ShopCommand
+import com.example.shopSearch.shop.domain.persist.ShopAdvancedRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.buffer
@@ -18,10 +18,10 @@ import org.springframework.stereotype.Service
  */
 @Service
 class ShopServiceImpl(
-    private val shopRepository: ShopRepository
+    private val shopRepository: ShopAdvancedRepository
 ) : ShopService {
 
-    override suspend fun searchWithIn(request: ShopRequest.WithIn): Flow<String> = withContext(Dispatchers.IO) {
+    override suspend fun searchWithIn(request: ShopCommand.WithInRequest): Flow<String> = withContext(Dispatchers.IO) {
         val geoPoint = GeoPoint(request.latitude, request.longitude)
         val pageRequest = PageRequest.of(request.page, request.size)
 
@@ -31,7 +31,7 @@ class ShopServiceImpl(
             .map { it.shopId }
     }
 
-    override suspend fun searchByCategoryWithIn(request: ShopRequest.CategoryWithIn): Flow<String> =
+    override suspend fun searchByCategoryWithIn(request: ShopCommand.CategoryWithInRequest): Flow<String> =
         withContext(Dispatchers.IO) {
             val geoPoint = GeoPoint(request.latitude, request.longitude)
             val pageRequest = PageRequest.of(request.page, request.size)
@@ -48,7 +48,7 @@ class ShopServiceImpl(
                 .map { it.shopId }
         }
 
-    override suspend fun searchByDetailCategoryWithIn(request: ShopRequest.DetailCategoryWithIn): Flow<String> =
+    override suspend fun searchByDetailCategoryWithIn(request: ShopCommand.DetailCategoryWithInRequest): Flow<String> =
         withContext(Dispatchers.IO) {
             val geoPoint = GeoPoint(request.latitude, request.longitude)
             val pageRequest = PageRequest.of(request.page, request.size)
@@ -65,7 +65,7 @@ class ShopServiceImpl(
                 .map { it.shopId }
         }
 
-    override suspend fun searchByShopNameWithIn(request: ShopRequest.ShopNameWithIn): Flow<String> =
+    override suspend fun searchByShopNameWithIn(request: ShopCommand.ShopNameWithInRequest): Flow<String> =
         withContext(Dispatchers.IO) {
             val geoPoint = GeoPoint(request.latitude, request.longitude)
             val pageRequest = PageRequest.of(request.page, request.size)
