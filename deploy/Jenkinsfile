@@ -37,7 +37,7 @@ pipeline {
             steps {
                 script {
                     try {
-                        withAWS(credentials: "${AWS_CREDENTIALS}", role: 'arn:aws:iam::326991552997:role/jenkins_deploy_role', roleAccount: "326991552997", externalId: "18k7102dy@gmail.com") {
+                        withAWS(credentials: "${FARGATE_DEPLOY_CREDENTIALS}", role: 'arn:aws:iam::326991552997:role/jenkins_deploy_role', roleAccount: "326991552997", externalId: "18k7102dy@gmail.com") {
                             sh "aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin ${ECR_REPO}"
                             sh 'docker push ${ECR_REPO}:latest'
                         }
