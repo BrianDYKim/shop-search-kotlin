@@ -1,0 +1,70 @@
+pipeline {
+    agent any
+
+    environment {
+        ECR_REPO = "326991552997.dkr.ecr.ap-northeast-2.amazonaws.com/withmarket-shop-search"
+
+        APP_NAME = "shop-search-kotlin"
+
+        ECS_CLUSTER_NAME = "withmarket-main-cluster"
+
+        SEARCH_SERVICE_NAME = "shop-search"
+
+        FARGATE_DEPLOY_CREDENTIALS = "jenkins_deploy_user_credentials"
+    }
+
+
+    stages {
+        stage("Build the application") {
+            steps {
+                dir("${env.WORKSPACE}") {
+                    sh 'chmod 755 ./gradlew'
+                    sh './gradlew build'
+                }
+            }
+        }
+
+        stage("Build docker image") {
+            steps {
+                dir("${env.WORKSPACE}") {
+                    sh 'docker build -t ${APP_NAME} .'
+                    sh 'docker tag ${APP_NAME}:latest ${ECR_REPO}:latest'
+                }
+            }
+        }
+
+        stage("ECR Upload") {
+            steps {
+                script {
+                    try {
+                        withAWS(credentials: "${AWS_CREDENTIALS}", role: 'arn:aws:iam::326991552997:role/jenkins_deploy_role', roleAccount: "326991552997", externalId: "18k7102dy@gmail.com") {
+                            sh "aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin ${ECR_REPO}"
+                            sh 'docker push ${ECR_REPO}:latest'
+                        }
+                    }catch(error) {
+                        print(error)
+                        currentBuild.result = 'FAILURE'
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            slackSend(
+                channel: "#server-build-history",
+                color: "good",
+                message: "[Successful] Job:${env.JOB_NAME}, Build num:#${env.BUILD_NUMBER} (<${env.RUN_DISPLAY_URL}|open job detail>)"
+            )
+        }
+
+        failure {
+            slackSend(
+                channel: "#server-build-history",
+                color: "danger",
+                message: "[Failed] Job:${env.JOB_NAME}, Build num:#${env.BUILD_NUMBER} @channel (<${env.RUN_DISPLAY_URL}|open job detail>)"
+            )
+        }
+    }
+}
